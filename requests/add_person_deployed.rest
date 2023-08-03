@@ -1,0 +1,7 @@
+POST https://puhelinluettelo-pbg4.onrender.com/api/persons
+Content-Type: application/json
+
+{
+    "name": "The Thin White Duke",
+    "number": "55-55-5555555"
+}
