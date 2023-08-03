@@ -3,7 +3,21 @@ const morgan = require("morgan")
 const app = express()
 
 app.use(express.json())
-app.use(morgan("tiny"))
+morgan.token('body', (req) => JSON.stringify(req.body))
+app.use(morgan(
+    (tokens, req, res) => {
+        return(
+            [
+                tokens.method(req, res),
+                tokens.url(req, res),
+                tokens.status(req, res),
+                tokens.res(req, res, 'content-length'), '-',
+                tokens['response-time'](req, res), 'ms',
+                tokens.body(req)
+            ].join(' ')
+        )
+    }
+))
 
 let persons = [
     {
@@ -55,7 +69,7 @@ app.delete("/api/persons/:id", (request, response) => {
 })
 
 app.post("/api/persons", (request, response) => {
-    const newPerson = request.body
+    const newPerson = {...request.body}
     if (!newPerson.name) {
         return response.status(400).json({error: "Name missing"})
     } else if (!newPerson.number) {
