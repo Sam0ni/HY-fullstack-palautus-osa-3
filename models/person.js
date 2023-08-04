@@ -12,8 +12,26 @@ mongoose.connect(url)
     })
 
 const personSchema = new mongoose.Schema({
-  name: String,
-  number: String,
+  name: {
+    type: String,
+    minlength: 3,
+    required: true
+},
+  number: {
+    type: String,
+    minlength: 8,
+    validate: {
+        validator: (val) => {
+            const valArr = val.split("-")
+            if (valArr.length !== 2 || valArr[0].length !== 2 || valArr[0].length !== 3) {
+                return false
+            }
+            return True
+        },
+        message: val => `${val.value} is an invalid number.`
+    },
+    required: true
+  },
 })
 
 personSchema.set("toJSON", {
