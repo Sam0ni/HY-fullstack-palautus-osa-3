@@ -23,7 +23,7 @@ const personSchema = new mongoose.Schema({
     validate: {
         validator: (val) => {
             const valArr = val.split("-")
-            if (valArr.length !== 2 || valArr[0].length !== 2 || valArr[0].length !== 3) {
+            if (valArr.length !== 2 || valArr[0].length > 3 || valArr[0].length < 2) {
                 return false
             }
             return True
